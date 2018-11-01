@@ -11,17 +11,18 @@
                 <th>삭제</th>
             </tr>
         </thead>
+        <tbody>
         {% for todo in todos %}
+            {% if not todo.is_completed %}
             <tr>
                 <th>{{ todo.priority }}</th>
                 <td>{{ todo.title }}</td>
                 <td><a href="#">완료</a></td>
-                <td><a href="#">수정</a></td>
+                <td><a href="{% url 'todo_list:todo_modify' todo.pk %}">수정</a></td>
                 <td><a href="#">삭제</a></td>
             </tr>
+            {% endif %}
         {% endfor %}
-        <tbody>
-
         </tbody>
     </table>
 {% endblock content %}
