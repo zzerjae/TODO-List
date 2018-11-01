@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from . import models, forms
@@ -17,7 +18,11 @@ def todo_add(request):
             if form.cleaned_data['due_by']:
                 todo.due_by = form.cleaned_data['due_by']
             todo.author = request.user
-            todo.priority = len(models.TODO.objects.filter(author=request.user)) + 1
+            todos = models.TODO.objects.filter(author=request.user)
+            if todos:
+                todo.priority = todos.last().priority + 1
+            else:
+                todo.priority = 1
             todo.save()
 
             return HttpResponseRedirect('/todo/')
@@ -29,7 +34,8 @@ def todo_add(request):
 
 
 def todo_complete_list(request):
-    pass
+    completed_todo = models.TODO.objects.filter(Q(author=request.user) & Q(status='c'))
+    return render(request, 'todo_list/todo_completed_list.html', {'todos': completed_todo})
 
 
 def todo_reorder(request):
@@ -54,14 +60,15 @@ def todo_modify(request, todo_id):
                 for t in models.TODO.objects.filter(author=request.user):
                     if t.priority > todo.priority:
                         t.priority -= 1
-                        todo.priority = 0
                         t.save()
+                todo.priority = 0
             else:
                 old_priority = todo.priority
                 new_priority = form.cleaned_data['priority']
                 # 우선순위에 변동이 없을 때
                 if old_priority == new_priority:
-                    pass
+                    if new_priority == 0:
+                        todo.priority = models.TODO.objects.filter(author=request.user).last().priority + 1
                 # 할 일의 우선순위가 높아졌을때(e.g. 5순위 > 1순위)
                 elif old_priority > new_priority:
                     for t in models.TODO.objects.filter(author=request.user):
@@ -85,9 +92,26 @@ def todo_modify(request, todo_id):
 
 
 
-def todo_delete(request):
-    pass
+def todo_delete(request, todo_id):
+    todo = get_object_or_404(models.TODO, pk=todo_id)
+    for t in models.TODO.objects.filter(author=request.user):
+        if t.priority > todo.priority:
+            t.priority -= 1
+            todo.priority = 0
+            t.save()
+    todo.delete()
+
+    return HttpResponseRedirect('/todo/')
 
 
-def todo_complete(request):
-    pass
+def todo_complete(request, todo_id):
+    todo = get_object_or_404(models.TODO, pk=todo_id)
+    todo.status = 'c'
+    for t in models.TODO.objects.filter(author=request.user):
+        if t.priority > todo.priority:
+            t.priority -= 1
+            t.save()
+    todo.priority = 0
+    todo.save()
+
+    return HttpResponseRedirect('/todo/')

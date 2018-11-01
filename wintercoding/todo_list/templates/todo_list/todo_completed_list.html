@@ -4,24 +4,18 @@
     <table>
         <thead>
             <tr>
-                <th>우선순위</th>
                 <th>제목</th>
-                <th>완료</th>
                 <th>수정</th>
                 <th>삭제</th>
             </tr>
         </thead>
         <tbody>
         {% for todo in todos %}
-            {% if not todo.is_completed %}
             <tr>
-                <th>{{ todo.priority }}</th>
                 <td>{{ todo.title }}</td>
-                <td><a href="{% url 'todo_list:todo_complete' todo.id %}">완료</a></td>
                 <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
                 <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
             </tr>
-            {% endif %}
         {% endfor %}
         </tbody>
     </table>
