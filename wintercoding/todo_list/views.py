@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from .models import TODO
-
+from . import models
+ 
 
 def todo_list(request):
-    pass
-
+    my_todo = models.TODO.objects.filter(author=request.user)
+    return render(request, 'todo_list/todo_list.html', {'todos': my_todo})
 
 def todo_add(request):
     pass
@@ -18,7 +18,7 @@ def todo_reorder(request):
     pass
 
 
-def todo_detail(request):
+def todo_detail(request, id):
     pass
 
 

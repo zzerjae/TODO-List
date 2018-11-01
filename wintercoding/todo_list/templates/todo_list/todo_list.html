@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>우선순위</th>
+                <th>제목</th>
+                <th>완료</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        {% for todo in todos %}
+            <tr>
+                <th>{{ todo.priority }}</th>
+                <td>{{ todo.title }}</td>
+                <td><a href="#">완료</a></td>
+                <td><a href="#">수정</a></td>
+                <td><a href="#">삭제</a></td>
+            </tr>
+        {% endfor %}
+        <tbody>
+
+        </tbody>
+    </table>
+{% endblock content %}
