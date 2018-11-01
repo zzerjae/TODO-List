@@ -1,0 +1,18 @@
+
+{% extends "todo_list/todo_base.html" %}
+
+{% block todo %}
+<h1>{{ todo.title }}</h1>
+<p>
+    {{ todo.content }}
+</p>
+<ul>
+<li>마감 날짜: {{ todo.due_date }}</li>
+<li>마감 시간: {{ todo.due_time }}</li>
+{% if todo.is_completed %}
+<li>완료 날짜/시간: {{ todo.completed_at }}</li>
+{% else %}
+<li>우선순위: {{ todo.priority }}</li>
+{% endif %}
+</ul>
+{% endblock todo %}

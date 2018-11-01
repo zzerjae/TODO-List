@@ -1,22 +1,24 @@
-{% extends "base.html" %}
+{% extends "todo_list/todo_base.html" %}
 
-{% block content %}
+{% block todo %}
     <table>
         <thead>
             <tr>
                 <th>제목</th>
                 <th>수정</th>
                 <th>삭제</th>
+                <th>완료 일자/시각</th>
             </tr>
         </thead>
         <tbody>
         {% for todo in todos %}
             <tr>
-                <td>{{ todo.title }}</td>
+                <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
                 <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
                 <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
+                <td>{{ todo.completed_at }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-{% endblock content %}
+{% endblock todo %}

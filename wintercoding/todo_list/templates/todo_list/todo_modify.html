@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "todo_list/todo_base.html" %}
 
-{% block content %}
+{% block todo %}
  
     <form action="{{ todo_list.todo_modify }}" method="post">
         {% csrf_token %}
@@ -8,4 +8,4 @@
         <input type="submit" value="Submit" />
     </form>
 
-{% endblock content %}
+{% endblock todo %}

@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "todo_list/todo_base.html" %}
 
-{% block content %}
+{% block todo %}
     <table>
         <thead>
             <tr>
@@ -9,6 +9,8 @@
                 <th>완료</th>
                 <th>수정</th>
                 <th>삭제</th>
+                <th>상승</th>
+                <th>하강</th>
             </tr>
         </thead>
         <tbody>
@@ -16,13 +18,15 @@
             {% if not todo.is_completed %}
             <tr>
                 <th>{{ todo.priority }}</th>
-                <td>{{ todo.title }}</td>
+                <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
                 <td><a href="{% url 'todo_list:todo_complete' todo.id %}">완료</a></td>
                 <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
                 <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
+                <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}">위로</a></td>
+                <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}">아래로</a></td>
             </tr>
             {% endif %}
         {% endfor %}
         </tbody>
     </table>
-{% endblock content %}
+{% endblock todo %}
