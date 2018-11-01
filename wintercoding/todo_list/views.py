@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from . import models, forms
  
 
@@ -15,8 +16,10 @@ def todo_add(request):
             todo = models.TODO()
             todo.title = form.cleaned_data['title']
             todo.content = form.cleaned_data['content']
-            if form.cleaned_data['due_by']:
-                todo.due_by = form.cleaned_data['due_by']
+            if form.cleaned_data['due_date']:
+                todo.due_date = form.cleaned_data['due_date']
+            if form.cleaned_data['due_time']:
+                todo.due_time = form.cleaned_data['due_time']
             todo.author = request.user
             todos = models.TODO.objects.filter(author=request.user)
             if todos:
@@ -38,12 +41,28 @@ def todo_complete_list(request):
     return render(request, 'todo_list/todo_completed_list.html', {'todos': completed_todo})
 
 
-def todo_reorder(request):
-    pass
+def todo_reorder(request, todo_id, priority):
+    todo = get_object_or_404(models.TODO, pk=todo_id)
+    todos = models.TODO.objects.filter(Q(author=request.user) & Q(status='i'))
+    for t in todos:
+        if t.priority == todo.priority - 1 and priority == 0:
+            t.priority += 1
+            todo.priority -= 1
+            t.save()
+            todo.save()
+        elif t.priority == todo.priority + 1 and priority == 1:
+            t.priority -= 1
+            todo.priority += 1
+            t.save()
+            todo.save()
+
+    return HttpResponseRedirect('/todo/')
+
 
 
 def todo_detail(request, todo_id):
-    pass
+    todo = get_object_or_404(models.TODO, pk=todo_id)
+    return render(request, 'todo_list/todo_detail.html', {'todo': todo})
 
 
 def todo_modify(request, todo_id):
@@ -53,32 +72,36 @@ def todo_modify(request, todo_id):
         if form.is_valid():
             todo.title = form.cleaned_data['title']
             todo.content = form.cleaned_data['content']
-            if form.cleaned_data['due_by']:
-                todo.due_by = form.cleaned_data['due_by']
+            if form.cleaned_data['due_date']:
+                todo.due_date = form.cleaned_data['due_date']
+            if form.cleaned_data['due_time']:
+                todo.due_time = form.cleaned_data['due_time']
             todo.status = form.cleaned_data['status']
+            todos = models.TODO.objects.filter(Q(author=request.user) & Q(status='i'))
             if todo.status == 'c':
-                for t in models.TODO.objects.filter(author=request.user):
+                for t in todos:
                     if t.priority > todo.priority:
                         t.priority -= 1
                         t.save()
                 todo.priority = 0
+                todo.completed_at = timezone.now()
             else:
                 old_priority = todo.priority
                 new_priority = form.cleaned_data['priority']
                 # 우선순위에 변동이 없을 때
                 if old_priority == new_priority:
                     if new_priority == 0:
-                        todo.priority = models.TODO.objects.filter(author=request.user).last().priority + 1
+                        todo.priority = todos.last().priority + 1
                 # 할 일의 우선순위가 높아졌을때(e.g. 5순위 > 1순위)
                 elif old_priority > new_priority:
-                    for t in models.TODO.objects.filter(author=request.user):
+                    for t in todos:
                         if t.priority < old_priority and t.priority >= new_priority:
                             t.priority += 1
                             todo.priority = new_priority
                             t.save()
                 # 할 일의 우선순위가 낮아졌을때(e.g. 1순위 > 5순위)
                 else:
-                    for t in models.TODO.objects.filter(author=request.user):
+                    for t in todos:
                         if t.priority > old_priority and t.priority <= new_priority:
                             t.priority -= 1
                             todo.priority = new_priority
@@ -94,7 +117,7 @@ def todo_modify(request, todo_id):
 
 def todo_delete(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
-    for t in models.TODO.objects.filter(author=request.user):
+    for t in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')):
         if t.priority > todo.priority:
             t.priority -= 1
             todo.priority = 0
@@ -107,11 +130,12 @@ def todo_delete(request, todo_id):
 def todo_complete(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     todo.status = 'c'
-    for t in models.TODO.objects.filter(author=request.user):
+    for t in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')):
         if t.priority > todo.priority:
             t.priority -= 1
             t.save()
     todo.priority = 0
+    todo.completed_at = timezone.now()
     todo.save()
 
     return HttpResponseRedirect('/todo/')
