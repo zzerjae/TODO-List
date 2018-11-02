@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <ul>
+        <li><a href="{% url 'todo_list:todo_add' %}">TODO 추가</a></li>
+        <li><a href="#">깃허브로 로그인</a></li>
+    </ul>
     {% block todo %}
     {% endblock todo %}
 {% endblock content %}

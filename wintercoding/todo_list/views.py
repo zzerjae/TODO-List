@@ -9,6 +9,7 @@ def todo_list(request):
     my_todo = models.TODO.objects.filter(author=request.user)
     return render(request, 'todo_list/todo_list.html', {'todos': my_todo})
 
+
 def todo_add(request):
     if request.method == 'POST':
         form = forms.TODOForm(request.POST)
@@ -57,7 +58,6 @@ def todo_reorder(request, todo_id, priority):
             todo.save()
 
     return HttpResponseRedirect('/todo/')
-
 
 
 def todo_detail(request, todo_id):
@@ -112,7 +112,6 @@ def todo_modify(request, todo_id):
     else:
         form = forms.TODOModifyForm(instance=todo)
     return render(request, 'todo_list/todo_modify.html', {'form': form})
-
 
 
 def todo_delete(request, todo_id):
