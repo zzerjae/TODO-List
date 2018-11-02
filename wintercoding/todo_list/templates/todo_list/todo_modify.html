@@ -1,11 +1,17 @@
 {% extends "todo_list/todo_base.html" %}
 
+{% load crispy_forms_tags %}
+
+{% block navi_list %}
+    <a class="nav-link active" href="{% url 'todo_list:todo_list' %}">TODO</a>
+    <a class="nav-link" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
+{% endblock navi_list %}
+
 {% block todo %}
- 
+
     <form action="{{ todo_list.todo_modify }}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit" />
-    </form>
+        {% crispy form %}
+    </form> 
 
 {% endblock todo %}

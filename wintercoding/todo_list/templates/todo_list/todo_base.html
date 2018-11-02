@@ -1,24 +1,36 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/cover.css' %}">
+{% endblock css %}
+
 {% load socialaccount %}
 
+{% block navi %}
+    <h3 class="masthead-brand">TODO-List</h3>
+    <nav class="nav nav-masthead">
+        {% block navi_list %}
+        {% endblock navi_list %}
+    </nav>
+{% endblock navi %}
+
 {% block content %}
-    <ul>
-        <li><a href="{% url 'todo_list:todo_add' %}">TODO 추가</a></li>
-        {% if user.is_authenticated %}
-            <li> {{ user.username }}</li>
-            <li>
-                <form method="POST" action="{% url 'account_logout' %}">
-                    {% csrf_token %}
-                    {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                    {% endif %}
-                    <button type="submit">로그 아웃</button>
-                </form>
-            </li>
-        {% else %}
-            <a href="{% url 'account_login' %}">Sign In</a>
-        {% endif %}
-    </ul>
+    <h1>Let's Do It!</h1>
+    {% if user.is_authenticated %}
+        <h2>안녕하세요, {{ user.username }} 님, 오늘도 힘내봅시다.</h2>
+        <form method="POST" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+            <button class="btn btn-sm btn-outline-secondary" type="submit">로그 아웃</button>
+        </form>
+        <br>
+    {% else %}
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'account_login' %}">로그인</a>
+    {% endif %}
+    
     {% block todo %}
     {% endblock todo %}
 {% endblock content %}

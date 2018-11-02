@@ -1,24 +1,37 @@
 {% extends "todo_list/todo_base.html" %}
 
+{% block navi_list %}
+    <a class="nav-link" href="{% url 'todo_list:todo_list' %}">TODO</a>
+    <a class="nav-link active" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
+{% endblock navi_list %}
+
 {% block todo %}
-    <table>
+{% if user.is_authenticated %}
+    <p class="lead">
+        <a href="{% url 'todo_list:todo_add' %}" class="btn btn-lg btn-secondary">할일 만들기</a>
+    </p>
+    <table class="table table-hover">
         <thead>
-            <tr>
-                <th>제목</th>
-                <th>수정</th>
-                <th>삭제</th>
-                <th>완료 일자/시각</th>
-            </tr>
+          <tr>
+            <th scope="col">제목</th>
+            <th scope="col">수정</th>
+            <th scope="col">삭제</th>
+            <th scope="col">완료 일자/시각</th>
+          </tr>
         </thead>
         <tbody>
-        {% for todo in todos %}
-            <tr>
-                <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
-                <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
-                <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
-                <td>{{ todo.completed_at }}</td>
-            </tr>
-        {% endfor %}
+            {% for todo in todos %}
+                {% if not todo.is_completed %}
+                <tr>
+                    <th scope="row">{{ todo.priority }}</th>
+                    <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
+                    <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
+                    <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
+                    <td>{{ todo.completed_at }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
+{% endif %}
 {% endblock todo %}

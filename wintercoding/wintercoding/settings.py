@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,5 @@ SITE_ID = 1
 
 LOGOUT_REDIRECT_URL = '/todo/'
 LOGIN_REDIRECT_URL = '/todo/'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

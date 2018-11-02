@@ -1,33 +1,42 @@
 {% extends "todo_list/todo_base.html" %}
 
+{% block navi_list %}
+    <a class="nav-link active" href="{% url 'todo_list:todo_list' %}">TODO</a>
+    <a class="nav-link" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
+    
+{% endblock navi_list %}
+
 {% block todo %}
 {% if user.is_authenticated %}
-    <table>
+    <p class="lead">
+        <a href="{% url 'todo_list:todo_add' %}" class="btn btn-lg btn-secondary">할일 만들기</a>
+    </p>
+    <table class="table table-hover">
         <thead>
-            <tr>
-                <th>우선순위</th>
-                <th>제목</th>
-                <th>완료</th>
-                <th>수정</th>
-                <th>삭제</th>
-                <th>상승</th>
-                <th>하강</th>
-            </tr>
+          <tr>
+            <th scope="col">우선순위</th>
+            <th scope="col">제목</th>
+            <th scope="col">완료</th>
+            <th scope="col">수정</th>
+            <th scope="col">삭제</th>
+            <th scope="col">상승</th>
+            <th scope="col">하강</th>
+          </tr>
         </thead>
         <tbody>
-        {% for todo in todos %}
-            {% if not todo.is_completed %}
-            <tr>
-                <th>{{ todo.priority }}</th>
-                <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
-                <td><a href="{% url 'todo_list:todo_complete' todo.id %}">완료</a></td>
-                <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
-                <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
-                <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}">위로</a></td>
-                <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}">아래로</a></td>
-            </tr>
-            {% endif %}
-        {% endfor %}
+            {% for todo in todos %}
+                {% if not todo.is_completed %}
+                <tr>
+                    <th scope="row">{{ todo.priority }}</th>
+                    <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
+                    <td><a href="{% url 'todo_list:todo_complete' todo.id %}">완료</a></td>
+                    <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
+                    <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
+                    <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}">위로</a></td>
+                    <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}">아래로</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 {% endif %}
