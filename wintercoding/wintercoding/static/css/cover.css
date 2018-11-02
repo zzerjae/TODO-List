@@ -8,6 +8,9 @@ a:focus,
 a:hover {
   color: #fff;
 }
+.nounderline {
+  text-decoration: none !important
+}
 
 /* Custom default button */
 .btn-secondary,

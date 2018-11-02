@@ -25,5 +25,8 @@ class TODO(models.Model):
     def is_completed(self):
         return self.status == 'c'
 
+    def is_expired(self):
+        return self.status == 'e'
+
     def __str__(self):
         return self.title

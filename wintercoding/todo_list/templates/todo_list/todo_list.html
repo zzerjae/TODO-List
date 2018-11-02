@@ -5,38 +5,54 @@
     <a class="nav-link" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
 {% endblock navi_list %}
 
+{% block h2 %}<h2>{{ user.username }}의 Todo List</h2>{% endblock h2 %}
+
 {% block todo %}
 {% if user.is_authenticated %}
     <p class="lead">
-        <a href="{% url 'todo_list:todo_add' %}" class="btn btn-lg btn-secondary">할일 만들기</a>
+        <a href="{% url 'todo_list:todo_add' %}" class="btn btn-lg btn-secondary">New</a>
     </p>
-    <table class="table table-borderless">
-        <thead>
-          <tr>
-            <th scope="col">우선순위</th>
-            <th scope="col">제목</th>
-            <th scope="col">완료</th>
-            <th scope="col">수정</th>
-            <th scope="col">삭제</th>
-            <th scope="col">상승</th>
-            <th scope="col">하강</th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for todo in todos %}
-                {% if not todo.is_completed %}
-                <tr>
-                    <th scope="row">{{ todo.priority }}</th>
-                    <td><a href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></td>
-                    <td><a href="{% url 'todo_list:todo_complete' todo.id %}">완료</a></td>
-                    <td><a href="{% url 'todo_list:todo_modify' todo.id %}">수정</a></td>
-                    <td><a href="{% url 'todo_list:todo_delete' todo.id %}">삭제</a></td>
-                    <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}">위로</a></td>
-                    <td><a href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}">아래로</a></td>
-                </tr>
+
+    <div class="list-group">
+        {% for todo in todos %}
+            {% if not todo.is_completed %}
+                {% if todo.is_expired %}
+                <div class="list-group-item flex-column align-items-start list-group-item-danger">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <i><a class="far fa-check-square fa-lg" href="{% url 'todo_list:todo_complete' todo_id=todo.id %}" ></a></i>
+                            </div>
+                            <div class="col-8">
+                                <h5 class="mb-1"><a class="nounderline" href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></h5>
+                            </div>
+                            <div class="col-2">
+                                <i><a class="fas fa-angle-up fa-lg" href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}" ></a></i>
+                                <i><a class="fas fa-angle-down fa-lg" href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}"></a></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="list-group-item flex-column align-items-start list-group-item-dark">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <i><a class="far fa-check-square fa-lg" href="{% url 'todo_list:todo_complete' todo_id=todo.id %}" ></a></i>
+                            </div>
+                            <div class="col-8">
+                                <h5 class="mb-1"><a class="nounderline" href="{% url 'todo_list:todo_detail' todo.id %}">{{ todo.title }}</a></h5>
+                            </div>
+                            <div class="col-2">
+                                <i><a class="fas fa-angle-up fa-lg" href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=0 %}" ></a></i>
+                                <i><a class="fas fa-angle-down fa-lg" href="{% url 'todo_list:todo_reorder' todo_id=todo.id priority=1 %}"></a></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endif %}
 {% endblock todo %}

@@ -16,9 +16,8 @@
 {% endblock navi %}
 
 {% block content %}
-    <h1>Let's Do It!</h1>
     {% if user.is_authenticated %}
-        <h2>안녕하세요, {{ user.username }} 님, 오늘도 힘내봅시다.</h2>
+        {% block h2 %}{% endblock h2 %}
         <form method="POST" action="{% url 'account_logout' %}">
             {% csrf_token %}
             {% if redirect_field_value %}
