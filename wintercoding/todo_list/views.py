@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -6,10 +7,13 @@ from . import models, forms
  
 
 def todo_list(request):
-    my_todo = models.TODO.objects.filter(author=request.user)
+    if request.user.is_authenticated:
+        my_todo = models.TODO.objects.filter(author=request.user)
+    else:
+        my_todo = None
     return render(request, 'todo_list/todo_list.html', {'todos': my_todo})
 
-
+@login_required
 def todo_add(request):
     if request.method == 'POST':
         form = forms.TODOForm(request.POST)
@@ -36,12 +40,12 @@ def todo_add(request):
 
     return render(request, 'todo_list/todo_add.html', {'form': form})
 
-
+@login_required
 def todo_complete_list(request):
     completed_todo = models.TODO.objects.filter(Q(author=request.user) & Q(status='c'))
     return render(request, 'todo_list/todo_completed_list.html', {'todos': completed_todo})
 
-
+@login_required
 def todo_reorder(request, todo_id, priority):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     todos = models.TODO.objects.filter(Q(author=request.user) & Q(status='i'))
@@ -59,12 +63,12 @@ def todo_reorder(request, todo_id, priority):
 
     return HttpResponseRedirect('/todo/')
 
-
+@login_required
 def todo_detail(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     return render(request, 'todo_list/todo_detail.html', {'todo': todo})
 
-
+@login_required
 def todo_modify(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     if request.method == 'POST':
@@ -113,7 +117,7 @@ def todo_modify(request, todo_id):
         form = forms.TODOModifyForm(instance=todo)
     return render(request, 'todo_list/todo_modify.html', {'form': form})
 
-
+@login_required
 def todo_delete(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     for t in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')):
@@ -125,7 +129,7 @@ def todo_delete(request, todo_id):
 
     return HttpResponseRedirect('/todo/')
 
-
+@login_required
 def todo_complete(request, todo_id):
     todo = get_object_or_404(models.TODO, pk=todo_id)
     todo.status = 'c'

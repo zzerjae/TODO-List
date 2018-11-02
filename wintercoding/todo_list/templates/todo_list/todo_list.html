@@ -1,6 +1,7 @@
 {% extends "todo_list/todo_base.html" %}
 
 {% block todo %}
+{% if user.is_authenticated %}
     <table>
         <thead>
             <tr>
@@ -29,4 +30,5 @@
         {% endfor %}
         </tbody>
     </table>
+{% endif %}
 {% endblock todo %}

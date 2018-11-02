@@ -1,9 +1,23 @@
 {% extends "base.html" %}
+{% load socialaccount %}
 
 {% block content %}
     <ul>
         <li><a href="{% url 'todo_list:todo_add' %}">TODO 추가</a></li>
-        <li><a href="#">깃허브로 로그인</a></li>
+        {% if user.is_authenticated %}
+            <li>Welcome {{ user.username }} !!!</li>
+            <li>
+                <form method="POST" action="{% url 'account_logout' %}">
+                    {% csrf_token %}
+                    {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+                    <button type="submit">로그 아웃</button>
+                </form>
+            </li>
+        {% else %}
+            <a href="{% provider_login_url 'github' %}">Sign Up</a>
+        {% endif %}
     </ul>
     {% block todo %}
     {% endblock todo %}
