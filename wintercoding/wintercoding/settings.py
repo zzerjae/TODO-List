@@ -60,7 +60,7 @@ ROOT_URLCONF = 'wintercoding.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'wintercoding', 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'wintercoding', 'templates'), os.path.join(BASE_DIR, 'wintercoding', 'templates', 'allauth')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

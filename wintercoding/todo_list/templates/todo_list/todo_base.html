@@ -5,7 +5,7 @@
     <ul>
         <li><a href="{% url 'todo_list:todo_add' %}">TODO 추가</a></li>
         {% if user.is_authenticated %}
-            <li>Welcome {{ user.username }} !!!</li>
+            <li> {{ user.username }}</li>
             <li>
                 <form method="POST" action="{% url 'account_logout' %}">
                     {% csrf_token %}
@@ -16,7 +16,7 @@
                 </form>
             </li>
         {% else %}
-            <a href="{% provider_login_url 'github' %}">Sign Up</a>
+            <a href="{% url 'account_login' %}">Sign In</a>
         {% endif %}
     </ul>
     {% block todo %}
