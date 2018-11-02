@@ -3,7 +3,6 @@
 {% block navi_list %}
     <a class="nav-link active" href="{% url 'todo_list:todo_list' %}">TODO</a>
     <a class="nav-link" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
-    
 {% endblock navi_list %}
 
 {% block todo %}
@@ -11,7 +10,7 @@
     <p class="lead">
         <a href="{% url 'todo_list:todo_add' %}" class="btn btn-lg btn-secondary">할일 만들기</a>
     </p>
-    <table class="table table-hover">
+    <table class="table table-borderless">
         <thead>
           <tr>
             <th scope="col">우선순위</th>

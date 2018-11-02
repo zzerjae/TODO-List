@@ -19,9 +19,8 @@ class TODOForm(forms.ModelForm):
         date = self.cleaned_data['due_date']
 
         # 마감 기한이 미래로 설정되어 있는지 확인
-        if date < datetime.date.today():
+        if date is not None and date < datetime.date.today():
             raise ValidationError('잘못된 날짜 - 현재 시간보다 미래를 설정해야 함')
-
         return date
 
     def __init__(self, *args, **kwargs):
@@ -53,7 +52,7 @@ class TODOModifyForm(forms.ModelForm):
         date = self.cleaned_data['due_date']
 
         # 마감 기한이 미래로 설정되어 있는지 확인
-        if date < datetime.date.today():
+        if date is not None and date < datetime.date.today():
             raise ValidationError('잘못된 날짜 - 현재 시간보다 미래를 설정해야 함')
 
         return date

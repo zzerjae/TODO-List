@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, reverse
 from django.utils import timezone
 from . import models, forms
  
@@ -95,7 +95,10 @@ def todo_modify(request, todo_id):
                 # 우선순위에 변동이 없을 때
                 if old_priority == new_priority:
                     if new_priority == 0:
-                        todo.priority = todos.last().priority + 1
+                        if todos:
+                            todo.priority = todos.last().priority + 1
+                        else:
+                           todo.priority = 1
                 # 할 일의 우선순위가 높아졌을때(e.g. 5순위 > 1순위)
                 elif old_priority > new_priority:
                     for t in todos:
@@ -112,7 +115,7 @@ def todo_modify(request, todo_id):
                             t.save()
             todo.save()
 
-            return HttpResponseRedirect('/todo/')
+            return HttpResponseRedirect(reverse('todo_list:todo_detail', kwargs={'todo_id': todo.id}))
     else:
         form = forms.TODOModifyForm(instance=todo)
     return render(request, 'todo_list/todo_modify.html', {'form': form})

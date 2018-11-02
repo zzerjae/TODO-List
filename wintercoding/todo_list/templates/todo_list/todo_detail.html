@@ -1,18 +1,39 @@
 
 {% extends "todo_list/todo_base.html" %}
 
+{% block navi_list %}
+    {% if not todo.is_completed %}
+    <a class="nav-link active" href="{% url 'todo_list:todo_list' %}">TODO</a>
+    <a class="nav-link" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
+    {% else %}
+    <a class="nav-link" href="{% url 'todo_list:todo_list' %}">TODO</a>
+    <a class="nav-link active" href="{% url 'todo_list:todo_complete_list' %}">Complete</a>
+    {% endif %}
+{% endblock navi_list %}
+
 {% block todo %}
-<h1>{{ todo.title }}</h1>
-<p>
-    {{ todo.content }}
-</p>
-<ul>
-<li>마감 날짜: {{ todo.due_date }}</li>
-<li>마감 시간: {{ todo.due_time }}</li>
-{% if todo.is_completed %}
-<li>완료 날짜/시간: {{ todo.completed_at }}</li>
-{% else %}
-<li>우선순위: {{ todo.priority }}</li>
-{% endif %}
-</ul>
+
+<div class="jumbotron">
+    <h1 class="display-4">{{ todo.title }}</h1>
+    {% if not todo.is_completed %}
+        <p class="lead">우선순위: {{ todo.priority }}</p>
+    {% endif %}
+    {% if todo.is_completed %}
+        <p class="lead">완료날짜: {{ todo.completed_at }}</p>
+    {% endif %}
+    {% if todo.due_date %}
+        <p class="lead">마감날짜: {{ todo.due_date }}</p>
+    {% endif %}
+    {% if todo.due_time %}
+        <p class="lead">마감시간: {{ todo.due_time }}</p>
+    {% endif %}
+    <hr class="my-4">
+    <p>{{ todo.content }}</p>
+    {% if not todo.is_completed %}
+    <a class="btn btn-secondary" href="{% url 'todo_list:todo_complete' todo.id %}#" role="button">완료하기</a>
+    {% endif %}
+    <a class="btn btn-secondary" href="{% url 'todo_list:todo_modify' todo.id %}#" role="button">수정하기</a>
+    <a class="btn btn-secondary" href="{% url 'todo_list:todo_delete' todo.id %}#" role="button">삭제하기</a>
+</div>
+
 {% endblock todo %}
