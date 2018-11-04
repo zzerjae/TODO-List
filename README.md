@@ -51,7 +51,7 @@ you can see demo [here](https://winter1.azurewebsites.net/todo/)
 > exit
 
 # Finally, you can run the App.
-~/TODO_List > ./docker_run.sh
+> ./docker_run.sh
 
 # go and check http://127.0.0.1:8080/todo/
 ```
