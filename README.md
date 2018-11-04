@@ -22,7 +22,8 @@ figure 1. Main Page
 
 1. [Demo](#Demo)
 2. [How to Run](#How__to_Run)
-3. [License](#license)
+3. [Dev Stack](#Dev_Stack)
+4. [License](#license)
 
 ******
 
@@ -57,6 +58,23 @@ You can see demo [here](https://winter1.azurewebsites.net/todo/).
 # go and check http://127.0.0.1:8080/todo/
 ```
 
+
+## Dev_Stack
+
+> ### BackEnd
+> Python 3.6.7
+> Django 2.1.2
+> PostgreSQL
+>
+> ### DevOps
+> Docker
+> Azure Database for PostgreSQL server
+> Azure Web App for Containers
+> Travis CI
+>
+> ### FrontEnd
+> Bootstrap
+> jQuery
 
 
 ## License
