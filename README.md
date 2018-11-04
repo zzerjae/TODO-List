@@ -62,19 +62,19 @@ You can see demo [here](https://winter1.azurewebsites.net/todo/).
 ## Dev_Stack
 
 > ### BackEnd
-> Python 3.6.7
-> Django 2.1.2
-> PostgreSQL
+> - Python 3.6.7
+> - Django 2.1.2
+> - PostgreSQL
 >
 > ### DevOps
-> Docker
-> Azure Database for PostgreSQL server
-> Azure Web App for Containers
-> Travis CI
+> - Docker
+> - Azure Database for PostgreSQL server
+> - Azure Web App for Containers
+> - Travis CI
 >
 > ### FrontEnd
-> Bootstrap
-> jQuery
+> - Bootstrap4
+> - jQuery
 
 
 ## License
