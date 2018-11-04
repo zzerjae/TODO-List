@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +25,7 @@ SECRET_KEY = 'v6=e(4mejfts62uyq&xp#b(isbye(rlk!@@xbm^e2t3j3_0f!)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,7 +62,10 @@ ROOT_URLCONF = 'wintercoding.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'wintercoding', 'templates'), os.path.join(BASE_DIR, 'wintercoding', 'templates', 'allauth')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'wintercoding', 'templates'),
+            os.path.join(BASE_DIR, 'wintercoding', 'templates', 'allauth')
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +140,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'wintercoding', 'static'),
         ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 TIME_INPUT_FORMATS = ('%I:%M %p',)
 

@@ -18,6 +18,9 @@ def check_deadline(func):
         request = args[0]
 
         now = datetime.datetime.now()
+        
+        if not request.user.is_authenticated:
+            return r
 
         for todo in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')|Q(status='e')):
             if todo.due_date or todo.due_time:
