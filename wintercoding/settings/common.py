@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'crispy_forms',
-    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +137,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'wintercoding', 'static'),
+            os.path.join(BASE_DIR, 'wintercoding', 'static'),
         ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
