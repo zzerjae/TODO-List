@@ -2,7 +2,7 @@
 
 <p align="center">
 	<a href="https://github.com/jaeho93/TODO-List/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
-	<a href="https://travis-ci.com/jaeho93/TODO-List/"><img src="https://travis-ci.com/jaeho93/TODO-List.svg?token=uXH6DrxqNzFngpRF4bXk&branch=master/"></a>	
+	<a href="https://travis-ci.com/jaeho93/TODO-List/"><img src="https://travis-ci.com/jaeho93/TODO-List.svg?token=uXH6DrxqNzFngpRF4bXk&branch=master"></a>	
 </p>
 
 ## Overview
@@ -17,18 +17,19 @@ figure 1. Main Page
 </div>
 
 <br>
-*****
+
+******
 
 1. [Demo](#Demo)
 2. [How to Run](#How__to_Run)
 3. [License](#license)
 
-*****
+******
 
 
 ## Demo
 
-you can see demo [here](https://winter1.azurewebsites.net/todo/)
+You can see demo [here](https://winter1.azurewebsites.net/todo/).
 
 ## How_to_Run
 
