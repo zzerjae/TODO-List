@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from todo_list.views import todo_list
 
+
 urlpatterns = [
     path('', todo_list, name='todo_list'),
     path('admin/', admin.site.urls),

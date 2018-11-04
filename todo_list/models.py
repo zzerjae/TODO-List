@@ -3,6 +3,9 @@ from django.db import models
 
 
 class TODO(models.Model):
+    """
+    TODO의 모델
+    """
     STATUS_CHOCES = (
         ('i', '진행중'),
         ('c', '완료'),

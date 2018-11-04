@@ -45,11 +45,12 @@ You can see demo [here](https://winter1.azurewebsites.net/todo/).
 # Build Docker Image.
 > docker build -t todolist .
 
-# Run Docker for setup.
+# Run Docker for setup and run test server
 > ./docker_setup.sh
 > python3 manage.py makemigrations
 > python3 manage.py migrate
 > python3 manage.py createsuperuser
+> python3 manage.py runserver 0.0.0.0:80
 > exit
 
 # Finally, you can run the App.

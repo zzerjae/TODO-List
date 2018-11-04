@@ -3,14 +3,12 @@ import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
-
 from model_mommy import mommy
 
 from .models import TODO
 from .forms import TODOForm, TODOModifyForm
 
 class TestModelsTest(TestCase):
-    
     def setUp(self):
         self.author = mommy.make(User)
         self.todo = mommy.make(
@@ -21,6 +19,7 @@ class TestModelsTest(TestCase):
     def test_whatever_creation(self):
         todo = self.todo
         self.assertIn(todo.status, ('i', 'c', 'e'))
+
 
 class FormsTest(TestCase):
     def setUp(self):

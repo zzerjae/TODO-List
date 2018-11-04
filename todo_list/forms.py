@@ -22,7 +22,6 @@ class TODOForm(forms.ModelForm):
         if date is not None and date < datetime.date.today():
             raise ValidationError('잘못된 날짜 - 현재 시간보다 미래를 설정해야 함')
         return date
-
     def __init__(self, *args, **kwargs):
         super(TODOForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()

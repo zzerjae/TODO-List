@@ -9,16 +9,18 @@ from django.utils import timezone
 
 from . import models, forms
 
-# 마감기한 체크하는 함수
-# 편의상 날짜를 등록 안하면 오늘로
-# 시간을 등록 안하면 11시 59분으로 두고 계산한다.
+
 def check_deadline(func):
+    """
+    마감기한 체크하는 데코레이터
+    편의상 날짜를 등록 안하면 오늘로
+    시간을 등록 안하면 11시 59분으로 두고 계산한다.
+    마감 기한을 넘기면 message 알림
+    """
     def wrapper(*args, **kwargs):
         r = func(*args, **kwargs)
         request = args[0]
-
         now = datetime.datetime.now()
-        
         if not request.user.is_authenticated:
             return r
 
@@ -64,17 +66,25 @@ def check_deadline(func):
         return r
     return wrapper
 
+
 @check_deadline
 def todo_list(request):
+    """
+    사용자의 TODO List를 보여주는 View
+    """
     if request.user.is_authenticated:
         my_todo = models.TODO.objects.filter(author=request.user)
     else:
         my_todo = None
     return render(request, 'todo_list/todo_list.html', {'todos': my_todo})
 
+
 @check_deadline
 @login_required
 def todo_add(request):
+    """
+    TODO를 추가하는 View
+    """
     if request.method == 'POST':
         form = forms.TODOForm(request.POST)
         if form.is_valid():
@@ -100,15 +110,23 @@ def todo_add(request):
 
     return render(request, 'todo_list/todo_add.html', {'form': form})
 
+
 @check_deadline
 @login_required
 def todo_complete_list(request):
+    """
+    완료된 TODO List를 보여주는 View
+    """
     completed_todo = models.TODO.objects.filter(Q(author=request.user) & Q(status='c'))
     return render(request, 'todo_list/todo_completed_list.html', {'todos': completed_todo})
+
 
 @check_deadline
 @login_required
 def todo_reorder(request, todo_id, priority):
+    """
+    TODO List의 순서를 바꿔주는 View
+    """
     todo = get_object_or_404(models.TODO, pk=todo_id)
     todos = models.TODO.objects.filter(Q(author=request.user) & Q(status='i')|Q(status='e'))
     for t in todos:
@@ -127,15 +145,23 @@ def todo_reorder(request, todo_id, priority):
 
     return HttpResponseRedirect('/todo/')
 
+
 @check_deadline
 @login_required
 def todo_detail(request, todo_id):
+    """
+    TODO의 정보를 보여주는 View
+    """
     todo = get_object_or_404(models.TODO, pk=todo_id)
     return render(request, 'todo_list/todo_detail.html', {'todo': todo})
+
 
 @check_deadline
 @login_required
 def todo_modify(request, todo_id):
+    """
+    TODO를 수정하는 View
+    """
     todo = get_object_or_404(models.TODO, pk=todo_id)
     if request.method == 'POST':
         form = forms.TODOModifyForm(request.POST)
@@ -164,7 +190,7 @@ def todo_modify(request, todo_id):
                         if todos:
                             todo.priority = todos.last().priority + 1
                         else:
-                           todo.priority = 1
+                            todo.priority = 1
                 # 할 일의 우선순위가 높아졌을때(e.g. 5순위 > 1순위)
                 elif old_priority > new_priority:
                     for t in todos:
@@ -186,9 +212,13 @@ def todo_modify(request, todo_id):
         form = forms.TODOModifyForm(instance=todo)
     return render(request, 'todo_list/todo_modify.html', {'form': form})
 
+
 @check_deadline
 @login_required
 def todo_delete(request, todo_id):
+    """
+    TODO를 삭제하는 View
+    """
     todo = get_object_or_404(models.TODO, pk=todo_id)
     for t in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')|Q(status='e')):
         if t.priority > todo.priority:
@@ -199,9 +229,13 @@ def todo_delete(request, todo_id):
 
     return HttpResponseRedirect('/todo/')
 
+
 @check_deadline
 @login_required
 def todo_complete(request, todo_id):
+    """
+    TODO를 완료하는 View
+    """
     todo = get_object_or_404(models.TODO, pk=todo_id)
     todo.status = 'c'
     for t in models.TODO.objects.filter(Q(author=request.user) & Q(status='i')|Q(status='e')):
